@@ -87,7 +87,57 @@
 At the moment the business is running the simple 2-approximation greedy algorithm we discussed in class (i.e., the one without sorting the processing times; indeed, this is an \enquote{online} problem and you do not know the processing time of the next job until it arrives). They have been told that this may not be the best approximation algorithm possible, and they are wondering if they should be afraid of bad performance. However, they are reluctant to change the scheduling as they really like the simplicity of the current algorithm: jobs can be assigned to machines as soon as they arrive, without having to defer the decision until later jobs arrive.
 In particular, they have heard that this algorithm can produce solutions with makespan as much as twice the minimum possible; but their experience with the algorithm has been quite good: They have been running it each day for the last month, and they have not observed it to produce a makespan more than 20 percent above the average load, i.e., $\frac{1}{10} \sum_i t_i$.
 To try understanding why they do not seem to be encountering this factor-of-two behavior, you ask a bit about the kind of jobs and loads they see. You find out that the sizes of jobs range between 1 and 50, that is, $1 \leq t_i \leq 50$ for all jobs $i$; and the total load $\sum_i t_i$ is quite high each day: it is always at least 3000.
-Prove that on the type of inputs the company sees, the greedy algorithm will always find a solution whose makespan is at most 20 percent above the average load (this implies that the approximation ratio of the algorithm on this special input pattern is no more than 1.2).
+Prove that on the type of inputs the company sees, the greedy algorithm will always find a solution whose makespan is at most 20 percent above the average load (this implies that the approximation ratio of the algorithm on this special input pattern is no more than 1.2).\\
+
+Consider the machine $M_i$ that had the maximum load $T_i$ after all the jobs were assigned. Let job $t_j$ be the last one that is assigned to $M_i$. The load of the machine before the job was assigned would have been $T_i - t_j$. And every machine would need to have a load that is at least $T_i - t_j$. So the the sum of the loads of all the machines $(\sum_k T_k)$ would be at least $m (T_i - t_j)$, where $m$ is the number of machines.
+
+\begin{align*} 
+\sum_k T_k &\geq m (T_i - t_j)
+\end{align*}
+
+\begin{align} \label{SumOfJobs}
+T_i - t_j &\leq \frac{1}{m} \sum_k T_k
+\end{align}
+
+Since the sum of all the jobs is at least $3000$ and there are $10$ machines, from inequality \ref{SumOfJobs} we get
+
+\begin{align*} 
+T_i - t_j &\leq \frac{3000}{10} 
+\end{align*}
+\begin{align} \label{EqFirst}
+T_i - t_j &\leq 300
+\end{align}
+
+We know that the largest job size is $50$, and so
+\begin{align} \label{EqSecond}
+t_j &\leq 50
+\end{align}
+
+Adding inequalities \ref{EqFirst} and \ref{EqSecond}, we get
+\begin{align*} 
+T_i - t_j + t_j &\leq 350 + 50
+\end{align*}
+\begin{align} \label{ApproxSpan}
+T_i &\leq 350
+\end{align}
+
+For calculating the average load $T_{avg}$
+
+\begin{align*} 
+T_{avg} = \frac{3000}{10} = 300
+\end{align*}
+
+\begin{align} \label{AverageSpan}
+\frac{1}{T_{avg}} = \frac{1}{300}
+\end{align}
+
+Using  \ref{ApproxSpan} and \ref{AverageSpan}, we get
+\begin{align*} 
+\frac{T_i}{T_{avg}} &\leq \frac{350}{300} = 1.2\\
+T_i &\leq 1.2 T_{avg}
+\end{align*}
+
+Since $T_i$ is the load of the machine with the maximum load, it is the makespan of the greedy algorithm. So the makespan with the greedy algorithm is at most 20\% above the average load.
 
 \end{enumerate}
 
